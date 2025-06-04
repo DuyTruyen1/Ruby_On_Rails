@@ -1,0 +1,36 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+      <h2>Thông tin người dùng</h2>
+    </div>
+    <div class="card-body">
+      <div class="row mb-3">
+        <div class="col-md-3"><strong>Tên:</strong></div>
+        <div class="col-md-9"><%= @user.name %></div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-3"><strong>Email:</strong></div>
+        <div class="col-md-9"><%= @user.email %></div>
+      </div>
+
+      <h3 class="mt-4">Các bài viết của người dùng</h3>
+      <% if @user.microposts.any? %>
+        <div class="list-group">
+          <% @user.microposts.each do |micropost| %>
+            <div class="list-group-item">
+              <p><%= micropost.content %></p>
+              <small class="text-muted">Đăng lúc: <%= micropost.created_at.strftime("%d/%m/%Y %H:%M") %></small>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-muted">Chưa có bài viết nào.</p>
+      <% end %>
+    </div>
+    <div class="card-footer">
+      <%= link_to 'Sửa', edit_user_path(@user), class: 'btn btn-warning' %>
+      <%= link_to 'Quay lại', users_path, class: 'btn btn-secondary' %>
+    </div>
+  </div>
+</div>

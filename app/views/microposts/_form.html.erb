@@ -1,0 +1,76 @@
+<%= form_with(model: micropost, local: true, class: 'needs-validation', id: 'micropostForm') do |f| %>
+  <% if micropost.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(micropost.errors.count, "loi") %> da xay ra:</h4>
+      <ul>
+        <% micropost.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group mb-3">
+    <%= f.label :content, "Noi dung", class: 'form-label' %>
+    <%= f.text_area :content, class: 'form-control', id: 'micropostContent', rows: 5 %>
+    <div class="invalid-feedback" id="contentError"></div>
+    <div class="form-text" id="contentCount">0/1000 ky tu</div>
+  </div>
+
+  <div class="form-group mb-3">
+    <%= f.label :user_id, "Nguoi dang", class: 'form-label' %>
+    <%= f.collection_select :user_id, User.all, :id, :name, {}, { class: 'form-select' } %>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit micropost.new_record? ? "Dang bai" : "Cap nhat", class: 'btn btn-primary', id: 'submitButton' %>
+    <%= link_to 'Quay lai', microposts_path, class: 'btn btn-secondary' %>
+  </div>
+<% end %>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('micropostForm');
+  const contentInput = document.getElementById('micropostContent');
+  const contentError = document.getElementById('contentError');
+  const contentCount = document.getElementById('contentCount');
+  
+  function validateContent() {
+    const content = contentInput.value.trim();
+    const length = content.length;
+    
+    // Cập nhật số ký tự
+    contentCount.textContent = `${length}/1000 ky tu`;
+    
+    if (content === '') {
+      contentInput.classList.add('is-invalid');
+      contentError.textContent = 'Noi dung khong duoc de trong';
+      return false;
+    }
+    
+    if (length < 10) {
+      contentInput.classList.add('is-invalid');
+      contentError.textContent = 'Noi dung phai co it nhat 10 ky tu';
+      return false;
+    }
+    
+    if (length > 1000) {
+      contentInput.classList.add('is-invalid');
+      contentError.textContent = 'Noi dung khong duoc vuot qua 1000 ky tu';
+      return false;
+    }
+    
+    contentInput.classList.remove('is-invalid');
+    contentInput.classList.add('is-valid');
+    return true;
+  }
+  
+  contentInput.addEventListener('input', validateContent);
+  
+  form.addEventListener('submit', function(event) {
+    if (!validateContent()) {
+      event.preventDefault();
+    }
+  });
+});
+</script>
