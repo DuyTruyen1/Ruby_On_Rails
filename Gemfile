@@ -4,8 +4,17 @@ source "https://rubygems.org"
 gem "rails", "~> 8.0.2"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
-# Use sqlite3 as the database for Active Record
-gem "sqlite3", ">= 2.1"
+
+group :development, :test do
+  # Use sqlite3 as the database for Active Record
+  gem "sqlite3", ">= 2.1"
+end
+
+group :production do
+  # Use postgresql as the database for Active Record
+  gem "pg"
+end
+
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
@@ -44,8 +53,12 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
-  # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
+  # Static analysis for security vulnerabilities
   gem "brakeman", require: false
+
+  # Omakase Ruby styling
+  gem "rubocop-rails", require: false
+  gem "rubocop-minitest", require: false
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
@@ -60,4 +73,7 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "minitest-reporters"
+  gem "guard"                # For automated testing
+  gem "guard-minitest"       # For automated testing
 end
