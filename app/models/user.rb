@@ -2,7 +2,9 @@ class User < ApplicationRecord
     has_many :microposts
     validate :validate_email_format
     validates :name, presence: { message: "Ten khong duoc de trong" }
-    validates :email, presence: true
+    validates :email, presence: true, 
+                     uniqueness: { case_sensitive: false, 
+                                 message: "Email da duoc su dung" }
 
     private
 
