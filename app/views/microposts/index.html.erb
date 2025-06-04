@@ -1,0 +1,32 @@
+<div class="container mt-4">
+  <h1 class="mb-4">Danh sách bài viết</h1>
+
+  <div class="mb-3">
+    <%= link_to 'Tạo bài viết mới', new_micropost_path, class: 'btn btn-primary' %>
+  </div>
+
+  <div class="row">
+    <% @microposts.each do |micropost| %>
+      <div class="col-md-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= link_to micropost.user.name, user_path(micropost.user) %>
+            </h5>
+            <p class="card-text"><%= micropost.content %></p>
+            <p class="card-text">
+              <small class="text-muted">
+                Đăng lúc: <%= micropost.created_at.strftime("%d/%m/%Y %H:%M") %>
+              </small>
+            </p>
+            <div class="btn-group">
+              <%= link_to 'Xem', micropost, class: 'btn btn-info btn-sm' %>
+              <%= link_to 'Sửa', edit_micropost_path(micropost), class: 'btn btn-warning btn-sm' %>
+              <%= button_to 'Xóa', micropost_path(micropost), method: :delete, data: { turbo_confirm: 'Bạn có chắc chắn muốn xóa?' }, class: 'btn btn-danger btn-sm', form_class: 'd-inline' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

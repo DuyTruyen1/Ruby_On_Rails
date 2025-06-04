@@ -1,0 +1,96 @@
+<%= form_with(model: user, local: true, class: 'needs-validation', id: 'userForm') do |f| %>
+  <% if user.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(user.errors.count, "loi") %> da xay ra:</h4>
+      <ul>
+        <% user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group mb-3">
+    <%= f.label :name, "Ten nguoi dung", class: 'form-label' %>
+    <%= f.text_field :name, class: 'form-control', id: 'userName' %>
+    <div class="invalid-feedback" id="nameError"></div>
+  </div>
+
+  <div class="form-group mb-3">
+    <%= f.label :email, "Email", class: 'form-label' %>
+    <%= f.text_field :email, class: 'form-control', id: 'userEmail' %>
+    <div class="invalid-feedback" id="emailError"></div>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit user.new_record? ? "Tao nguoi dung" : "Cap nhat", class: 'btn btn-primary', id: 'submitButton' %>
+    <%= link_to 'Quay lai', users_path, class: 'btn btn-secondary' %>
+  </div>
+<% end %>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('userForm');
+  const nameInput = document.getElementById('userName');
+  const emailInput = document.getElementById('userEmail');
+  const nameError = document.getElementById('nameError');
+  const emailError = document.getElementById('emailError');
+  
+  function validateName() {
+    if (nameInput.value.trim() === '') {
+      nameInput.classList.add('is-invalid');
+      nameError.textContent = 'Ten khong duoc de trong';
+      return false;
+    }
+    nameInput.classList.remove('is-invalid');
+    nameInput.classList.add('is-valid');
+    return true;
+  }
+  
+  function validateEmail() {
+    const email = emailInput.value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (email === '') {
+      emailInput.classList.add('is-invalid');
+      emailError.textContent = 'Email khong duoc de trong';
+      return false;
+    }
+    
+    if (!email.includes('@')) {
+      emailInput.classList.add('is-invalid');
+      emailError.textContent = 'Email phai chua ky tu @';
+      return false;
+    }
+    
+    if (!emailRegex.test(email)) {
+      emailInput.classList.add('is-invalid');
+      emailError.textContent = 'Email khong dung dinh dang';
+      return false;
+    }
+    
+    emailInput.classList.remove('is-invalid');
+    emailInput.classList.add('is-valid');
+    return true;
+  }
+  
+  nameInput.addEventListener('input', validateName);
+  emailInput.addEventListener('input', validateEmail);
+  
+  form.addEventListener('submit', function(event) {
+    let isValid = true;
+    
+    if (!validateName()) {
+      isValid = false;
+    }
+    
+    if (!validateEmail()) {
+      isValid = false;
+    }
+    
+    if (!isValid) {
+      event.preventDefault();
+    }
+  });
+});
+</script>
