@@ -2,9 +2,9 @@ class Micropost < ApplicationRecord
   belongs_to :user
   validates :content, presence: true, length: { maximum: 140 }
   validate :validate_content
-  
+
   private
-  
+
   def validate_content
     if content.blank?
       errors.add(:content, "Noi dung khong duoc de trong")

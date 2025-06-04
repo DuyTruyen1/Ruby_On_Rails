@@ -7,6 +7,7 @@ class MicropostsTest < ApplicationSystemTestCase
 
   test "visiting the index" do
     visit microposts_url
+
     assert_selector "h1", text: "Microposts"
   end
 
